@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="WordPressBuild" basedir="." default="wordpress.development.plugins">
+
+	<!-- all properties -->
+	<property file="build.properties" />
+
+	<!-- local overrides -->
+	<property file="local.properties" />
+
+	<target name="wordpress.core">
+		<available file="${path.src}/index.php" property="wordpress.exists" value="1" />
+		<if>
+			<equals arg1="${wordpress.exists}" arg2="1" />
+			<then>
+				<svnupdate
+					repositoryurl="${url.wordpress.trunk}"
+					todir="${path.src}" />
+			</then>
+			<else>
+				<svncheckout
+					repositoryurl="${url.wordpress.trunk}"
+					todir="${path.src}" />
+			</else>
+		</if>
+	</target>
+
+	<target name="wordpress.development.plugins" depends="wordpress.core">
+		<available file="${path.wordpress.plugins}/debug-bar" property="plugin.debug-bar.exists" value="1" />
+		<if>
+			<equals arg1="${plugin.debug-bar.exists}" arg2="1" />
+			<then>
+				<svnupdate
+					repositoryurl="${url.wordpress.plugins.debug-bar}"
+					todir="${path.wordpress.plugins}/debug-bar" />
+			</then>
+			<else>
+				<svncheckout
+					repositoryurl="${url.wordpress.plugins.debug-bar}"
+					todir="${path.wordpress.plugins}/debug-bar" />
+			</else>
+		</if>
+	</target>
+
+</project>
+
+<!-- EOF -->
