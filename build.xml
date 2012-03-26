@@ -3,7 +3,7 @@
 <project name="WordPressBuild" basedir="." default="main">
 
 	<!-- all properties -->
-	<resolvepath propertyName="basedir" file="${basedir}"/>
+	<resolvepath propertyName="basedir" file="${project.basedir}"/>
 	<property file="build.properties" />
 
 	<!-- local overrides -->
@@ -11,29 +11,31 @@
 
 	<target name="checkpath">
 		<!-- Sanity check -->
-		<available file="${path.build}/build.xml" property="valid.build.path" value="1" />
-		<fail unless="valid.build.path" message="Phing must be run inside your project's ./build directory." />
+		<echo msg="${project.basedir}" />
+
+		<available file="${project.basedir}/build.xml" property="valid.build.path" value="1" />
+		<fail unless="valid.build.path" message="Phing must be run one level up from your project's ./build directory." />
 		<echo message="Build path is valid" />
 	</target>
 
 	<target name="wordpress.core" depends="checkpath">
-		<available file="${path.src}/index.php" property="wordpress.exists" value="1" />
+		<available file="${path.build}/index.php" property="wordpress.exists" value="1" />
 		<if>
 			<equals arg1="${wordpress.exists}" arg2="1" />
 			<then>
 				<svnupdate
 					repositoryurl="${url.wordpress.trunk}"
-					todir="${path.src}" />
+					todir="${path.build}" />
 			</then>
 			<else>
 				<svncheckout
 					repositoryurl="${url.wordpress.trunk}"
-					todir="${path.src}" />
+					todir="${path.build}" />
 			</else>
 		</if>
 
 		<!-- Copy default wp-config.php into place, if one doesn't already exist -->
-		<copy file="${path.build.src}/wp-config.php" todir="${path.src}" overwrite="false" />
+		<copy file="${path.src}/wp-config.php" todir="${path.build}" overwrite="false" />
 	</target>
 
 	<target name="wordpress.development.plugins" depends="wordpress.core">
@@ -107,7 +109,7 @@
 
 	</target>
 
-	<target name="main" depends="wordpress.core, wordpress.development.plugins, wordpress.com.plugins, wordpress.com.themes">
+    <target name="main" depends="wordpress.core, wordpress.development.plugins, wordpress.com.plugins, wordpress.com.themes">
 		<echo message="Build complete" />
 	</target>
 
