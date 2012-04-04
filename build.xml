@@ -10,10 +10,12 @@
 	<property file="local.properties" />
 
 	<target name="checkpath">
+		<loadfile property="version" file="${url.wordpress.plugins}/wptouch/trunk/readme.txt"/>
+		<echo msg="${version}" />
 		<!-- Sanity check -->
 		<echo msg="${project.basedir}" />
 
-		<available file="${project.basedir}/build.xml" property="valid.build.path" value="1" />
+		<!--available file="${project.basedir}/build.xml" property="valid.build.path" value="1" /-->
 		<fail unless="valid.build.path" message="Phing must be run one level up from your project's ./build directory." />
 		<echo message="Build path is valid" />
 	</target>
@@ -41,42 +43,42 @@
 	<target name="wordpress.development.plugins" depends="wordpress.core">
 		<!-- TODO: Could simplify the PHP script to only return/output the stable tag name via <exec returnProperty="" /> and then do all the business logic here in the build file -->
 		<echo message="Updating plugin: Debug Bar" />
-		<exec command="php ${path.build}/bin/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/debug-bar/trunk/readme.txt --readmepath=${path.wordpress.plugins}/debug-bar/readme.txt" checkreturn="true" escape="false" />
+		<exec command="php ${path.bin}/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/debug-bar/trunk/readme.txt --readmepath=${path.wordpress.plugins}/debug-bar/readme.txt" checkreturn="true" escape="false" />
 
 		<echo message="Updating plugin: Debug Bar Console" />
-		<exec command="php ${path.build}/bin/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/debug-bar-console/trunk/readme.txt --readmepath=${path.wordpress.plugins}/debug-bar-console/readme.txt" checkreturn="true" escape="false" />
+		<exec command="php ${path.bin}/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/debug-bar-console/trunk/readme.txt --readmepath=${path.wordpress.plugins}/debug-bar-console/readme.txt" checkreturn="true" escape="false" />
 
 		<echo message="Updating plugin: Debug Bar Extender" />
-		<exec command="php ${path.build}/bin/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/debug-bar-extender/trunk/readme.txt --readmepath=${path.wordpress.plugins}/debug-bar-extender/readme.txt" checkreturn="true" escape="false" />
+		<exec command="php ${path.bin}/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/debug-bar-extender/trunk/readme.txt --readmepath=${path.wordpress.plugins}/debug-bar-extender/readme.txt" checkreturn="true" escape="false" />
 
 		<echo message="Updating plugin: Log Deprecated Notices" />
-		<exec command="php ${path.build}/bin/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/log-deprecated-notices/trunk/readme.txt --readmepath=${path.wordpress.plugins}/log-deprecated-notices/readme.txt" checkreturn="true" escape="false" />
+		<exec command="php ${path.bin}/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/log-deprecated-notices/trunk/readme.txt --readmepath=${path.wordpress.plugins}/log-deprecated-notices/readme.txt" checkreturn="true" escape="false" />
 
 		<echo message="Updating plugin: Core Control" />
-		<exec command="php ${path.build}/bin/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/core-control/trunk/readme.txt --readmepath=${path.wordpress.plugins}/core-control/readme.txt" checkreturn="true" escape="false" />
+		<exec command="php ${path.bin}/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/core-control/trunk/readme.txt --readmepath=${path.wordpress.plugins}/core-control/readme.txt" checkreturn="true" escape="false" />
 
 	</target>
 
 	<target name="wordpress.com.plugins" depends="wordpress.core">
 
 		<echo message="Updating plugin: Jetpack" />
-		<exec command="php ${path.build}/bin/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/jetpack/trunk/readme.txt --readmepath=${path.wordpress.plugins}/jetpack/readme.txt" checkreturn="true" escape="false" />
+		<exec command="php ${path.bin}/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/jetpack/trunk/readme.txt --readmepath=${path.wordpress.plugins}/jetpack/readme.txt" checkreturn="true" escape="false" />
 
 		<echo message="Updating plugin: PollDaddy" />
-		<exec command="php ${path.build}/bin/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/polldaddy/trunk/readme.txt --readmepath=${path.wordpress.plugins}/polldaddy/readme.txt" checkreturn="true" escape="false" />
+		<exec command="php ${path.bin}/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/polldaddy/trunk/readme.txt --readmepath=${path.wordpress.plugins}/polldaddy/readme.txt" checkreturn="true" escape="false" />
 
 		<echo message="Updating plugin: Grunion Contact Form" />
-		<exec command="php ${path.build}/bin/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/grunion-contact-form/trunk/readme.txt --readmepath=${path.wordpress.plugins}/grunion-contact-form/readme.txt" checkreturn="true" escape="false" />
+		<exec command="php ${path.bin}/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/grunion-contact-form/trunk/readme.txt --readmepath=${path.wordpress.plugins}/grunion-contact-form/readme.txt" checkreturn="true" escape="false" />
 
 		<echo message="Updating plugin: Onswipe" />
-		<exec command="php ${path.build}/bin/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/onswipe/trunk/readme.txt --readmepath=${path.wordpress.plugins}/onswipe/readme.txt" checkreturn="true" escape="false" />
+		<exec command="php ${path.bin}/wordPressPluginGetStableTag.php --readmeurl=${url.wordpress.plugins}/onswipe/trunk/readme.txt --readmepath=${path.wordpress.plugins}/onswipe/readme.txt" checkreturn="true" escape="false" />
 
 	</target>
 
 	<target name="wordpress.com.themes" depends="wordpress.core">
 
 		<echo message="Updating theme: WP Mobile" />
-		<available file="${path.wordpress.public.themes}/wp-mobile/style.css" property="wpmobile.theme.exists" value="1" />
+		<available type="dir" file="${path.wordpress.public.themes}/wp-mobile" property="wpmobile.theme.exists" value="1" />
 		<if>
 			<equals arg1="${wpmobile.theme.exists}" arg2="1" />
 			<then>
@@ -92,7 +94,7 @@
 		</if>
 
 		<echo message="Updating theme: WPtouch" />
-		<available file="${path.wordpress.public.themes}/wptouch/style.css" property="wptouch.theme.exists" value="1" />
+		<available type="dir" file="${path.wordpress.public.themes}/wptouch" property="wptouch.theme.exists" value="1" />
 		<if>
 			<equals arg1="${wpmobile.theme.exists}" arg2="1" />
 			<then>
@@ -109,8 +111,69 @@
 
 	</target>
 
-    <target name="main" depends="wordpress.core, wordpress.development.plugins, wordpress.com.plugins, wordpress.com.themes">
-		<echo message="Build complete" />
+	<target name="wordpress.vip.plugins" depends="wordpress.core">
+		<if>
+			<not>
+				<isset property="wordpress.username" />
+			</not>
+			<then>
+				<input propertyname="wordpress.username" promptChar=":" defaultValue="">Your WordPress.com username</input>
+				<echo message="To stop seeing this prompt, define this in your local.properties file:" />
+				<echo message="wordpress.username=${wordpress.username}" />
+			</then>
+		</if>
+
+		<if>
+			<not>
+				<isset property="wordpress.password" />
+			</not>
+			<then>
+				<input propertyname="wordpress.password" promptChar=":" defaultValue="">Your WordPress.com password</input>
+				<echo message="To stop seeing this prompt, define this in your local.properties file:" />
+				<echo message="wordpress.password=${wordpress.password}" />
+			</then>
+		</if>
+
+		<available type="dir" file="${path.wordpress.vip.plugins}" property="wordpress.vip.plugins.exists" value="1" />
+		<if>
+			<equals arg1="${wordpress.vip.plugins.exists}" arg2="1" />
+			<then>
+				<svnupdate
+					username="${wordpress.username}"
+					password="${wordpress.password}"
+					nocache="true"
+					trustServerCert="true"
+					repositoryurl="${url.wordpress.vip.plugins}"
+					todir="${path.wordpress.vip.plugins}" />
+			</then>
+			<else>
+				<svncheckout
+					username="${wordpress.username}"
+					password="${wordpress.password}"
+					nocache="true"
+					trustServerCert="true"
+					repositoryurl="${url.wordpress.vip.plugins}"
+					todir="${path.wordpress.vip.plugins}" />
+			</else>
+		</if>
+
+	</target>
+
+    <target name="main" depends="wordpress.core, wordpress.development.plugins, wordpress.com.plugins, wordpress.com.themes, wordpress.vip.plugins">
+		<echo message="WordPress Build complete" />
+
+		<available file="${project.basedir}/build.local.xml" property="local.build.exists" value="1" />
+		<if>
+			<equals arg1="${local.build.exists}" arg2="1" />
+			<then>
+				<echo message="Found ./build.local.xml -- Running..." />
+				<phing dir="${project.basedir}" target="main" phingfile="${project.basedir}/build.local.xml" inheritAll="true" />
+			</then>
+			<else>
+				<echo message="Did not find ./build.local.xml -- All done!" />
+			</else>
+		</if>
+
 	</target>
 
 </project>
